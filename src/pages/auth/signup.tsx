@@ -10,18 +10,59 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/router";
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 
 export default function Page() {
   const router = useRouter();
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmedPassword, setConfirmedPassword] = useState<string>("");
 
   const pushToSignIn = (e: FormEvent) => {
     e.preventDefault();
     router.push("/auth/signin");
   };
+
+  const signUserUp = (
+    e: FormEvent,
+    username: string,
+    password: string,
+    confirmedPassword: string
+  ) => {
+    e.preventDefault();
+
+    // Validation rules
+    const usernameRegex = /^(?=.*[A-Za-z0-9])[A-Za-z\d@$!%*#?&]{10,}$/;
+    const passwordRegex = /^(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{10,}$/;
+
+    if (!usernameRegex.test(username)) {
+      alert(
+        "Username must be at least 10 characters long and contain at least one special character or number."
+      );
+      return;
+    }
+
+    if (!passwordRegex.test(password)) {
+      alert(
+        "Password must be at least 10 characters long and contain at least one number and one special character."
+      );
+      return;
+    }
+
+    if (password !== confirmedPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
+
+    // If all validation rules pass, continue with sign up logic
+    // ...
+  };
+
   return (
     <main className="flex items-center justify-center min-h-screen">
-      <form>
+      <form
+        onSubmit={(e) => signUserUp(e, username, password, confirmedPassword)}
+      >
         <Card className="w-[25rem]">
           <CardHeader>
             <CardTitle>Sign up</CardTitle>
@@ -36,6 +77,8 @@ export default function Page() {
                 type="text"
                 id="username"
                 placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
               />
             </div>
@@ -47,6 +90,8 @@ export default function Page() {
                   type="password"
                   id="password"
                   placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
               </div>
@@ -57,6 +102,8 @@ export default function Page() {
                   type="password"
                   id="password"
                   placeholder="Password"
+                  value={confirmedPassword}
+                  onChange={(e) => setConfirmedPassword(e.target.value)}
                   required
                 />
               </div>
