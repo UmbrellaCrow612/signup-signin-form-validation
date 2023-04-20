@@ -54,11 +54,17 @@ export default function Page() {
               </div>
             </div>
           </CardContent>
-          <CardFooter className="flex justify-between">
-            <Button variant="ghost" type="button">
-              Clear
-            </Button>
-            <Button type="submit">Create</Button>
+          <CardFooter className="flex-col gap-2">
+            <div className="flex justify-between w-full">
+              <Button variant="ghost" type="button">
+                Clear
+              </Button>
+              <Button type="submit">Create</Button>
+            </div>
+            <div className="w-full flex items-center gap-2">
+              <CardDescription>Already have an account ?</CardDescription>{" "}
+              <Button variant="link">Sign in</Button>
+            </div>
           </CardFooter>
         </Card>
       </form>
