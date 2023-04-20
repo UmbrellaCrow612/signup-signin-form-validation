@@ -9,10 +9,18 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useRouter } from "next/router";
+import { FormEvent } from "react";
 
 export default function Page() {
+  const router = useRouter();
+
+  const pushToSignIn = (e: FormEvent) => {
+    e.preventDefault();
+    router.push("/auth/signin");
+  };
   return (
-    <main className="min-h-screen flex items-center justify-center">
+    <main className="flex items-center justify-center min-h-screen">
       <form>
         <Card className="w-[25rem]">
           <CardHeader>
@@ -61,9 +69,15 @@ export default function Page() {
               </Button>
               <Button type="submit">Create</Button>
             </div>
-            <div className="w-full flex items-center gap-2">
+            <div className="flex items-center w-full gap-2">
               <CardDescription>Already have an account ?</CardDescription>{" "}
-              <Button variant="link">Sign in</Button>
+              <Button
+                variant="link"
+                type="button"
+                onClick={(e) => pushToSignIn(e)}
+              >
+                Sign in
+              </Button>
             </div>
           </CardFooter>
         </Card>
