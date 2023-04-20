@@ -60,6 +60,15 @@ export default function Page() {
     }
   };
 
+  function clearForm() {
+    setUsername("");
+    setPassword("");
+    setConfirmedPassword("");
+    setUsernameError(false);
+    setPasswordError(false);
+    setConfirmedPasswordError(false);
+  }
+
   return (
     <main className="flex items-center justify-center min-h-screen">
       <form
@@ -132,7 +141,7 @@ export default function Page() {
           </CardContent>
           <CardFooter className="flex-col gap-2">
             <div className="flex justify-between w-full">
-              <Button variant="ghost" type="button">
+              <Button variant="ghost" type="button" onClick={() => clearForm()}>
                 Clear
               </Button>
               <Button type="submit">Create</Button>
