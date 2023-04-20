@@ -23,6 +23,7 @@ export default function Page() {
   const [passwordError, setPasswordError] = useState<boolean>(false);
   const [confirmedPasswordError, setConfirmedPasswordError] =
     useState<boolean>(false);
+  const [usernameTakenError, setUsernameTakenError] = useState<boolean>(false);
 
   const pushToSignIn = (e: FormEvent) => {
     e.preventDefault();
@@ -40,9 +41,15 @@ export default function Page() {
     setUsernameError(false);
     setPasswordError(false);
     setConfirmedPasswordError(false);
+    setUsernameError(false);
 
     const usernameRegex = /^(?=.*[A-Za-z0-9])[A-Za-z\d@$!%*#?&]{10,}$/;
     const passwordRegex = /^(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{10,}$/;
+
+    if (username === "usernameTaken") {
+      setUsernameTakenError(true);
+      return;
+    }
 
     if (!usernameRegex.test(username)) {
       setUsernameError(true);
@@ -67,6 +74,7 @@ export default function Page() {
     setUsernameError(false);
     setPasswordError(false);
     setConfirmedPasswordError(false);
+    setUsernameTakenError(false);
   }
 
   return (
@@ -80,7 +88,10 @@ export default function Page() {
             <CardDescription>
               You need to sign up to access the app
             </CardDescription>
-            {usernameError || passwordError || confirmedPasswordError ? (
+            {usernameError ||
+            passwordError ||
+            confirmedPasswordError ||
+            usernameTakenError ? (
               <CardDescription className="text-destructive">
                 {usernameError && (
                   <>
@@ -95,6 +106,9 @@ export default function Page() {
                   </>
                 )}
                 {confirmedPasswordError && <>Passwords do not match.</>}
+                {usernameTakenError && (
+                  <>Username already in use, please use another one.</>
+                )}
               </CardDescription>
             ) : (
               <></>
