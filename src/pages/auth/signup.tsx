@@ -18,6 +18,12 @@ export default function Page() {
   const [password, setPassword] = useState<string>("");
   const [confirmedPassword, setConfirmedPassword] = useState<string>("");
 
+  // Error states
+  const [usernameError, setUsernameError] = useState<boolean>(false);
+  const [passwordError, setPasswordError] = useState<boolean>(false);
+  const [confirmedPasswordError, setConfirmedPasswordError] =
+    useState<boolean>(false);
+
   const pushToSignIn = (e: FormEvent) => {
     e.preventDefault();
     router.push("/auth/signin");
@@ -31,31 +37,27 @@ export default function Page() {
   ) => {
     e.preventDefault();
 
-    // Validation rules
+    setUsernameError(false);
+    setPasswordError(false);
+    setConfirmedPasswordError(false);
+
     const usernameRegex = /^(?=.*[A-Za-z0-9])[A-Za-z\d@$!%*#?&]{10,}$/;
     const passwordRegex = /^(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{10,}$/;
 
     if (!usernameRegex.test(username)) {
-      alert(
-        "Username must be at least 10 characters long and contain at least one special character or number."
-      );
+      setUsernameError(true);
       return;
     }
 
     if (!passwordRegex.test(password)) {
-      alert(
-        "Password must be at least 10 characters long and contain at least one number and one special character."
-      );
+      setPasswordError(true);
       return;
     }
 
     if (password !== confirmedPassword) {
-      alert("Passwords do not match.");
+      setConfirmedPasswordError(true);
       return;
     }
-
-    // If all validation rules pass, continue with sign up logic
-    // ...
   };
 
   return (
@@ -69,6 +71,25 @@ export default function Page() {
             <CardDescription>
               You need to sign up to access the app
             </CardDescription>
+            {usernameError || passwordError || confirmedPasswordError ? (
+              <CardDescription className="text-destructive">
+                {usernameError && (
+                  <>
+                    Username must be at least 10 characters long and contain at
+                    least one special character or number.
+                  </>
+                )}
+                {passwordError && (
+                  <>
+                    Password must be at least 10 characters long and contain at
+                    least one number and one special character.
+                  </>
+                )}
+                {confirmedPasswordError && <>Passwords do not match.</>}
+              </CardDescription>
+            ) : (
+              <></>
+            )}
           </CardHeader>
           <CardContent className="space-y-8">
             <div className="grid w-full items-center gap-1.5">
