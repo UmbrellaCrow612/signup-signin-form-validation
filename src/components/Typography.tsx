@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export const H1 = ({ children }: { children: string }) => {
   return (
     <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
@@ -26,7 +28,7 @@ export const Blockquote = ({ children }: { children: string }) => {
   return <blockquote className="italic">{children}</blockquote>;
 };
 
-export const List = ({ children }: { children: string }) => {
+export const List = ({ children }: { children: ReactNode }) => {
   return <ul className="list-disc [&>li]:mt-2">{children}</ul>;
 };
 
