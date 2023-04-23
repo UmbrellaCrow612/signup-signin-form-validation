@@ -10,14 +10,24 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/router";
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 
 export default function SignInForm() {
   const router = useRouter();
 
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
   const pushToSignUp = (e: FormEvent) => {
     e.preventDefault();
     router.push("/auth/signup");
+  };
+
+  const clearSignInForm = (e: FormEvent) => {
+    e.preventDefault();
+
+    setUsername("");
+    setPassword("");
   };
   return (
     <>
@@ -37,6 +47,8 @@ export default function SignInForm() {
                 type="text"
                 id="username"
                 placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
               />
             </div>
@@ -47,13 +59,19 @@ export default function SignInForm() {
                 type="password"
                 id="password"
                 placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
           </CardContent>
           <CardFooter className="flex-col gap-2">
             <div className="flex justify-between w-full">
-              <Button variant="ghost" type="button">
+              <Button
+                variant="ghost"
+                type="button"
+                onClick={(e) => clearSignInForm(e)}
+              >
                 Clear
               </Button>
               <Button type="submit">Sign in</Button>

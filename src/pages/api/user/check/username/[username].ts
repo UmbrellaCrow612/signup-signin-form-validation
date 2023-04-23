@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 
 interface CheckUsernameResponse {
   isTaken: boolean;
@@ -18,8 +18,12 @@ export default async function handler(
     return;
   }
 
-  // Here you can make a database query to check if the username is taken
-  const isTaken = false; // Replace this with your database query
+  let isTaken = true;
 
+  if (username === "123456789w") {
+    return res.status(400).json({ isTaken });
+  }
+
+  isTaken = false;
   res.status(200).json({ isTaken });
 }

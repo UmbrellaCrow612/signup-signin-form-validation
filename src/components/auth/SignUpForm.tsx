@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/router";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 export default function SignUpForm() {
   const router = useRouter();
@@ -24,6 +24,18 @@ export default function SignUpForm() {
   const [confirmedPasswordError, setConfirmedPasswordError] =
     useState<boolean>(false);
   const [usernameTakenError, setUsernameTakenError] = useState<boolean>(false);
+
+  useEffect(() => {
+    const checkUsername = async () => {
+      const response = await fetch(`/api/user/check/username/${username}`);
+      const { isTaken } = await response.json();
+      setUsernameTakenError(isTaken);
+    };
+
+    if (username) {
+      checkUsername();
+    }
+  }, [username]);
 
   const pushToSignIn = (e: FormEvent) => {
     e.preventDefault();
@@ -41,13 +53,12 @@ export default function SignUpForm() {
     setUsernameError(false);
     setPasswordError(false);
     setConfirmedPasswordError(false);
-    setUsernameError(false);
+    setUsernameTakenError(false);
 
     const usernameRegex = /^(?=.*[A-Za-z0-9])[A-Za-z\d@$!%*#?&]{10,}$/;
     const passwordRegex = /^(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{10,}$/;
 
-    if (username === "usernameTaken") {
-      setUsernameTakenError(true);
+    if (usernameTakenError) {
       return;
     }
 
@@ -76,7 +87,6 @@ export default function SignUpForm() {
     setConfirmedPasswordError(false);
     setUsernameTakenError(false);
   }
-
   return (
     <>
       {" "}
